@@ -15,19 +15,11 @@ class QuestionsService {
     console.log(ProxyState.activeQuestion);
     console.log(ProxyState.questions);
   }
-  guess(guessedAnswer) {
-    const button = document.querySelector('button');
-    button.addEventListener("click", () => {
-      button.setAttribute('disabled', 'disabled')
-    }, {
-      once: true
-    });
-    let correctAnswer = ProxyState.activeQuestion.find(q => guessedAnswer == q.correct_answer)
+  async guess(guessedAnswer) {
+    let correctAnswer = ProxyState.activeQuestion.find(q => guessedAnswer == q.correct_answer);
     if (correctAnswer) {
-      Pop.toast('Nailed it!', 'success')
-      setTimeout(this.newQuestion, 3000)
-
-
+      await Pop.confirm('Great Job!', '', 'success', 'Continue')
+      this.newQuestion()
       // if there are more questions in ProxyState.questions, shift the next off to be the active question
       // or getQuestions()
     } else {
